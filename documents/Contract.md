@@ -21,3 +21,4 @@
 - The team will have a short meeting if neccessary to try resolve the issue. If no mutual agreements can be reached, wheelspinner.com will handle it. 
 - If team members don't cooperate, will discuss further with mentor
 ## Signatures
+Patrick Liu (pzl2) Shayan Azmoodeh (shayana3), Anh Phung (anhnp2)
