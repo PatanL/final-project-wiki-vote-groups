@@ -13,8 +13,8 @@ tests: bin/tests
 bin/exec: $(INPUTS)
 	${CXX} ${CXX_FLAGS} ${SRC_INPUTS} -o $@
 
-bin/exec-opt: $(INPUTS) src/main.cc
-	${CXX} ${CXX_FLAGS_OPTIMIZED} src/* -o $@
+bin/exec-opt: $(INPUTS)
+	${CXX} ${CXX_FLAGS_OPTIMIZED} ${SRC_INPUTS} -o $@
 
 .DEFAULT_GOAL := exec
 .PHONY: clean exec exec-opt
