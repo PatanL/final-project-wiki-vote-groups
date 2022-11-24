@@ -1,6 +1,7 @@
 #include "../includes/graph.h"
 
 #include <cassert>
+#include<iostream>
 
 using std::list;
 using std::unordered_map;
@@ -10,6 +11,16 @@ Graph::Graph(const std::string& filename): num_edge_(0) {
   ReadGraphData(filename);
   std::cout << num_edge_ << std::endl;
   AddEdgeWeights();
+  num_vertex_ = adj_list_.size();
+}
+
+Graph::Graph(int vertices) {
+  num_vertex_ = vertices;
+}
+
+void Graph::addEdge(int source, int destination) {
+  adj_list_[source].push_back(Edge(destination, 1));
+  adj_list_[destination].push_back(Edge(source, 1));
 }
 
 Graph::~Graph() {
@@ -54,6 +65,35 @@ vector<int> Graph::VotesDepthAwayFromMostPopular() {
     }
   }
   return node_at_depths;
+}
+
+int Graph::NumberofConnectedComponents() {
+  int count = 0;
+  unordered_map<int, bool> visited;
+  assert(visited[0] == false);
+  for(std::pair<int, list<Edge>> v : adj_list_) {
+    if(visited[v.first] == false) {
+      DFS(v.first, visited);
+      count += 1;
+      std::cout << v.first << std::endl;
+    }
+  }
+  return count;
+
+}
+
+void Graph::DFS(int v, unordered_map<int, bool>& visited) {
+  //mark currennt node as visited
+  visited[v] = true;
+
+  list<Edge>::iterator i;
+
+  for(i = adj_list_[v].begin(); i != adj_list_[v].end(); ++i) {
+    if(!visited[(*i).dest]) {
+      DFS((*i).dest, visited);
+    }
+  }
+
 }
 
 ////////////////////////////////////////

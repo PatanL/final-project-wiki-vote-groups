@@ -24,7 +24,15 @@ private:
 
 public:
     Graph(const std::string &filename);
+    Graph(int vertices);
     ~Graph();
+
+    /**
+     * Adds an edge between two vertices
+     * @param source - one vertex the edge is connected to
+     * param destination - the other vertex the edge is connected to
+    */
+    void addEdge(int source, int destination);
 
     int GetNumEdges();
 
@@ -34,12 +42,24 @@ public:
      * by i connections.
     */
     vector<int> VotesDepthAwayFromMostPopular();
+
+    /**
+     * Gets the number of connected componenets in the graph.
+     * @returns The number of connected components.
+    */
+   int NumberofConnectedComponents();
+
+   /**
+    * Runs depth first search on the graph. Marks visited nodes.
+    * @param v - the vertex to visit.
+   */
+  void DFS(int v, unordered_map<int, bool>& visited);
     
 private:
     // we use a map because the indices are not consecutive (i.e., we have nodes labelled as 1, 5, 7, 20,...)
     unordered_map<int, list<Edge>> adj_list_;
     size_t num_edge_;
-    // int num_vertex;
+    int num_vertex_;
 
     void ReadGraphData(const std::string& filename);
 
