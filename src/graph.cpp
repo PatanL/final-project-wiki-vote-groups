@@ -30,6 +30,9 @@ Graph::~Graph() {
 int Graph::GetNumEdges() {
   return num_edge_;
 }
+int Graph::GetNumVertices() {
+  return num_vertex_;
+}
 
 vector<int> Graph::VotesDepthAwayFromMostPopular() {
   int start = FindMostVotedNode();
@@ -89,8 +92,8 @@ void Graph::DFS(int v, unordered_map<int, bool>& visited) {
   list<Edge>::iterator i;
 
   for(i = adj_list_[v].begin(); i != adj_list_[v].end(); ++i) {
-    if(!visited[(*i).dest]) {
-      DFS((*i).dest, visited);
+    if(!visited[i->dest]) {
+      DFS(i->dest, visited);
     }
   }
 

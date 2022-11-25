@@ -34,8 +34,15 @@ public:
     */
     void addEdge(int source, int destination);
 
+
+    /**
+     * Return the number of edges / vertices 
+     * Mainly used for testing purposes
+    */
+
     int GetNumEdges();
 
+    int GetNumVertices();
     /**
      * @returns vector of integers. The i-th index of the vector is
      * the number of nodes that are separated from the most voted for node
