@@ -1,7 +1,8 @@
 #include "../includes/graph.h"
 
 #include <cassert>
-#include<iostream>
+#include <iostream>
+#include <algorithm>
 
 using std::list;
 using std::unordered_map;
@@ -97,6 +98,57 @@ void Graph::DFS(int v, unordered_map<int, bool>& visited) {
     }
   }
 
+}
+
+vector<std::pair<int,int>> Graph::ShortesPathFromMostPopular() {
+  int start = FindMostVotedNode();
+  // run DFS on the start node in order to get all node in connected component
+  unordered_map<int,bool> connected_comp;
+  DFS(start, connected_comp);
+  vector<int> connected_vertex;
+  for (std::pair<int,bool> vertex_pair : connected_comp ){
+    connected_vertex.push_back(vertex_pair.first);
+  }
+  assert(connected_comp.begin()->first == start);
+  int numVertex = connected_comp.size();
+  // build distance matrix between any two 
+  int disMat[numVertex][numVertex];
+  for (int row = 0; row < numVertex; row++) {
+    for (int col = 0; col < numVertex; col++) {
+      // the maximum number of distance between the 2 nodes is the number of vertex + 1
+      disMat[row][col] = numVertex+1; 
+    }
+  }
+  disMat[0][0] = 0;
+  for (std::pair<int,bool> vertex_pair: connected_comp) {
+    int vertex1 = vertex_pair.first;
+    // Grab the adjacency list
+    list<Edge> v1_adj_list = adj_list_[vertex1];
+    for (Edge adj_edge : v1_adj_list) {
+      int vertex2 = adj_edge.dest;
+      if (std::find(connected_vertex.begin(),connected_vertex.end(), vertex2) != connected_vertex.end()) {
+        disMat[vertex1][vertex2] = adj_edge.weight;
+      }
+    }
+  }
+  for (int source : connected_vertex) {
+    for (int dest: connected_vertex) {
+      for (int mid: connected_vertex) {
+        if (disMat[source][dest] > disMat[source][mid] + disMat[mid][dest] ) {
+          disMat[source][dest] = disMat[source][mid] + disMat[mid][dest] ;
+        }
+      }
+    }
+  }
+  vector<std::pair<int,int>> output;
+  for (int dest: connected_vertex) {
+    if (disMat[start][dest] >= numVertex+1) {
+      output.push_back({dest, std::numeric_limits<int>::max()});
+    } else {
+      output.push_back({dest,disMat[start][dest]});
+    }
+  }
+  return output;
 }
 
 ////////////////////////////////////////

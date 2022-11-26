@@ -60,7 +60,19 @@ public:
     * Runs depth first search on the graph. Marks visited nodes.
     * @param v - the vertex to visit.
    */
-  void DFS(int v, unordered_map<int, bool>& visited);
+    void DFS(int v, unordered_map<int, bool>& visited);
+
+    /**
+    * Find Shortest Path between most voted candidates vs every
+    * other candidates in the same connected component
+    * Currently running on an unweigted directed graph, can adjust
+    * in order to have weight for each edge
+    * @returns the vector of pairs of nodes in connected components
+    * and distance from the most popular nodes from it
+    * The distance between node to itself is 0
+    * The distance between node to an unreachable node is inf
+    */ 
+    vector<std::pair<int,int>> ShortesPathFromMostPopular();
     
 private:
     // we use a map because the indices are not consecutive (i.e., we have nodes labelled as 1, 5, 7, 20,...)
