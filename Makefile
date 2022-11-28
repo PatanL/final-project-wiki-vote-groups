@@ -6,11 +6,10 @@ SRC_INPUTS=src/main.cpp src/graph.cpp
 TEST_INPUTS=tests/tests.cpp src/graph.cpp
 INCLUDES_INPUTS=includes/graph.h
 INPUTS=$(SRC_INPUTS) $(INCLUDES_INPUTS)
-T_INPUTS=$(TEST_INPUTS) $(INCLUDES_INPUTS)
 
 exec: bin/exec
 exec-opt: bin/exec-opt
-tests: bin/tests
+test: bin/test
 
 bin/exec: $(INPUTS)
 	${CXX} ${CXX_FLAGS} ${SRC_INPUTS} -o $@
@@ -18,10 +17,14 @@ bin/exec: $(INPUTS)
 bin/exec-opt: $(INPUTS)
 	${CXX} ${CXX_FLAGS_OPTIMIZED} ${SRC_INPUTS} -o $@
 
-bin/tests: $(T_INPUTS)
-	${CXX} ${CXX_FLAGS} ${TEST_INPUTS} -o $@
+bin/test: tests/tests.cpp obj/catch.o $(INPUTS)
+	${CXX} ${CXX_FLAGS} tests/tests.cpp obj/catch.o ${SRC_INPUTS} -o $@
+
+obj/catch.o: tests/catch.cpp tests/catch.hpp
+	$(CXX) $(CXX_FLAGS) -c $< -o $@
+
 .DEFAULT_GOAL := exec
-.PHONY: clean exec exec-opt
+.PHONY: clean exec exec-opt test
 
 clean:
 	rm -fr bin/* obj/*
