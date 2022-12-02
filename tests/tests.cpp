@@ -35,10 +35,3 @@ TEST_CASE("VotesDepthAwayFromMostPopular::Small", "[weight=5]") {
     std::vector<int> ans = {1,3};
     REQUIRE(nodes_depth == ans);
 }
-
-TEST_CASE("VotesDepthAwayFromMostPopular::Main", "[weight=5]") {
-    Graph g("data/wiki-Vote.txt");
-    std::vector<int> nodes_depths = g.VotesDepthAwayFromMostPopular();
-    std::vector<int> ans = {1, 15, 389, 1713, 198};
-    REQUIRE( nodes_depths == ans );
-}
