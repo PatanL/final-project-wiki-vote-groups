@@ -7,13 +7,19 @@
 #include <list>
 #include <vector>
 #include <queue>
+#include <stack>
 #include <fstream>
 #include <iostream>
-#include <stack>
+#include <limits>
+
+#define INF std::numeric_limits<double>::max()/2
+
 using std::list;
 using std::unordered_map;
 using std::unordered_set;
 using std::vector;
+using std::stack;
+using std::queue;
 
 class Graph {
 private:
@@ -57,13 +63,6 @@ public:
     */
    int NumberofConnectedComponents();
 
-   /**
-    * Runs depth first search on the graph. Marks visited nodes.
-    * @param v - the vertex to visit.
-   */
-    void DFS(int v, unordered_map<int, bool>& visited);
-    std::stack<int> DFS(int v);
-
     /**
     * Find Shortest Path between most voted candidates vs every
     * other candidates in the same connected component
@@ -74,12 +73,11 @@ public:
     * The distance between node to itself is 0
     * The distance between node to an unreachable node is inf
     */ 
-    vector<std::pair<int,int>> ShortesPathFromMostPopular();
+    unordered_map<int, double> ShortestPathFromMostPopular();
     
 private:
     // we use a map because the indices are not consecutive (i.e., we have nodes labelled as 1, 5, 7, 20,...)
     unordered_map<int, list<Edge>> adj_list_;
-    unordered_map<int,list<Edge>> t_adj_list;
     size_t num_edge_;
     int num_vertex_;
 
@@ -99,4 +97,23 @@ private:
     int FindMostVotedNode() const;
 
     bool NoDirectedAdjacentNodes(int node) const;
+
+    /**
+    * Runs depth first search on the graph. Marks visited nodes.
+    * @param v - the vertex to visit.
+    * @returns stack containing nodes in the order they are visited
+    */
+    stack<int> DFS(int start, const unordered_map<int, list<Edge>>& adj_list);
+
+    unordered_map<int, list<Edge>> Transpose(); 
 };
+
+template <typename T>
+vector<T> StackToVector(stack<T> s) {
+    vector<T> output;
+    while (!s.empty()) {
+        output.push_back(s.top());
+        s.pop();
+    }
+    return output;
+}

@@ -2,16 +2,10 @@
 
 #include <cassert>
 #include <iostream>
-#include <algorithm>
-
-using std::list;
-using std::unordered_map;
-using std::vector;
 
 Graph::Graph(const std::string& filename): num_edge_(0) {
   ReadGraphData(filename);
   AddEdgeWeights();
-  num_vertex_ = adj_list_.size();
 }
 
 Graph::Graph(int vertices) {
@@ -21,7 +15,6 @@ Graph::Graph(int vertices) {
 void Graph::addEdge(int source, int destination) {
   adj_list_[source].push_back(Edge(destination, 1));
   adj_list_[destination].push_back(Edge(source, 1));
-  num_edge_++;
 }
 
 int Graph::GetNumEdges() {
@@ -68,85 +61,74 @@ vector<int> Graph::VotesDepthAwayFromMostPopular() {
 }
 
 int Graph::NumberofConnectedComponents() {
-  int count = 0;
-  unordered_map<int, bool> visited;
-  assert(visited[0] == false);
-  for(std::pair<int, list<Edge>> v : adj_list_) {
-    if(visited[v.first] == false) {
-      DFS(v.first, visited);
-      count += 1;
-      std::cout << v.first << std::endl;
-    }
-  }
-  return count;
+  // int count = 0;
+  // unordered_map<int, bool> visited;
+  // assert(visited[0] == false);
+  // for(std::pair<int, list<Edge>> v : adj_list_) {
+  //   if(visited[v.first] == false) {
+  //     DFS(v.first, visited);
+  //     count += 1;
+  //     // std::cout << v.first << std::endl;
+  //   }
+  // }
+  return 0;
 
 }
 
-void Graph::DFS(int v, unordered_map<int, bool>& visited) {
-  //mark current node as visited
-  visited[v] = true;
-
-  list<Edge>::iterator i;
-
-  for(i = adj_list_[v].begin(); i != adj_list_[v].end(); ++i) {
-    if(!visited[i->dest]) {
-      DFS(i->dest, visited);
-    }
-  }
-}
-
-vector<std::pair<int,int>> Graph::ShortesPathFromMostPopular() {
+unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
   int start = FindMostVotedNode();
+
+  unordered_map<int, int> indices;
+
   // run DFS on the start node in order to get all node in connected component
-  unordered_map<int,bool> connected_comp;
-  DFS(start, connected_comp);
-  vector<int> connected_vertex;
-  for (std::pair<int,bool> vertex_pair : connected_comp ){
-    if (vertex_pair.second) {
-      connected_vertex.push_back(vertex_pair.first);
-    }
+  vector<int> connected_vertex = StackToVector(DFS(start, adj_list_));
+  int numVertex = connected_vertex.size();
+  for (int i = 0; i < numVertex; ++i) {
+    indices.insert({connected_vertex[i], i});
   }
-  size_t numVertex = connected_comp.size();
   // build distance matrix between any two 
-  std::vector<std::vector<size_t>> disMat;
-  for (size_t row = 0; row < numVertex; row++) {
-    std::vector<size_t> line;
-    for(size_t col = 0; col < numVertex; col++) {
-      // the maximum number of distance between the 2 nodes is < the number of vertex +1
-      line.push_back(numVertex+1);
+  vector<vector<double>> disMat(numVertex, vector<double>(numVertex, INF));
+
+  // adding weights to dist matrix
+  for (int v1 : connected_vertex) {
+    if (NoDirectedAdjacentNodes(v1)) {
+      continue;
     }
-    disMat.push_back(line);
-  }
-  disMat[0][0] = 0;
-  for (std::pair<int,bool> vertex_pair: connected_comp) {
-    int vertex1 = vertex_pair.first;
-    // Grab the adjacency list
-    list<Edge> v1_adj_list = adj_list_[vertex1];
-    for (Edge adj_edge : v1_adj_list) {
-      int vertex2 = adj_edge.dest;
-      if (std::find(connected_vertex.begin(),connected_vertex.end(), vertex2) != connected_vertex.end()) {
-        disMat[vertex1][vertex2] = adj_edge.weight;
-      }
+    int v1_idx = indices.at(v1);
+    list<Edge> v1_adj_list = adj_list_.at(v1);
+    disMat.at(v1_idx).at(v1_idx) = 0;
+    for (const Edge& adj_edge : v1_adj_list) {
+      int v2_idx = indices.at(adj_edge.dest);
+      disMat.at(v1_idx).at(v2_idx) = adj_edge.weight;
     }
   }
+  // for(size_t a = 0; a < disMat.size(); a++)
+  // {
+  //   for(size_t b = 0; b < disMat[0].size(); b++)
+  //   {
+  //     std::cout << disMat[a][b] << " ";
+  //   }
+  //   std::cout << '\n';
+  // }
+
+  // compute distances
   for (int source : connected_vertex) {
-    for (int dest: connected_vertex) {
-      for (int mid: connected_vertex) {
-        if (disMat[source][dest] > disMat[source][mid] + disMat[mid][dest] ) {
-          disMat[source][dest] = disMat[source][mid] + disMat[mid][dest] ;
-        }
+    int src_idx = indices.at(source);
+    for (int dest : connected_vertex) {
+      int dest_idx = indices.at(dest);
+      for (int mid : connected_vertex) {
+        int mid_idx = indices.at(mid);
+        disMat[src_idx][dest_idx] = std::min(disMat[src_idx][dest_idx], disMat[src_idx][mid_idx] + disMat[mid_idx][dest_idx]);
       }
     }
   }
-  vector<std::pair<int,int>> output;
-  for (int dest: connected_vertex) {
-    if (disMat[start][dest] >= numVertex+1) {
-      output.push_back({dest, std::numeric_limits<int>::max()});
-    } else {
-      output.push_back({dest,disMat[start][dest]});
-    }
+  
+
+  unordered_map<int, double> dist_to_start;
+  for (int dest : connected_vertex) {
+    dist_to_start.insert({dest, disMat[indices.at(start)][indices.at(dest)]});
   }
-  return output;
+  return dist_to_start;
 }
 
 ////////////////////////////////////////
@@ -161,13 +143,14 @@ void Graph::ReadGraphData(const std::string& filename) {
 
   unordered_set<int> vertices;
   constexpr unsigned weight = 1;
-  std::set<int> vertex_set;
   int src, dest;
   while (ifs >> src >> dest) {
     num_edge_++;
-
+    vertices.insert(src);
+    vertices.insert(dest);
     adj_list_[src].push_back(Edge(dest, weight));
   }
+  num_vertex_ = vertices.size();
   ifs.close();
 }
 
@@ -197,4 +180,34 @@ int Graph::FindMostVotedNode() const {
 
 bool Graph::NoDirectedAdjacentNodes(int node) const {
   return adj_list_.count(node) == 0;
+}
+
+stack<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list) {
+  unordered_map<int, bool> visited;
+  stack<int> visited_nodes;
+  stack<int> s;
+  visited[start] = true;
+  s.push(start);
+  while (!s.empty()) {
+    int curr_node = s.top();
+    s.pop();
+    visited_nodes.push(curr_node);
+
+    if (adj_list.count(curr_node) == 0) {
+      continue;
+    }
+
+    for (const Edge& e : adj_list.at(curr_node)) {
+      if (!visited[e.dest]) {
+        visited.at(e.dest) = true;
+        s.push(e.dest);
+      }
+    }
+  }
+  return visited_nodes;
+}
+
+unordered_map<int, list<Edge>> Graph::Transpose() {
+  unordered_map<int, list<Edge>> trans_adj_list;
+  // TODO
 }
