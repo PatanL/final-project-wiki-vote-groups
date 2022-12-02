@@ -3,16 +3,15 @@
 #include <cassert>
 #include <iostream>
 #include <algorithm>
-#include <limits>
-#include <set>
+
 using std::list;
 using std::unordered_map;
 using std::vector;
 
 Graph::Graph(const std::string& filename): num_edge_(0) {
   ReadGraphData(filename);
-  std::cout << num_edge_ << std::endl;
   AddEdgeWeights();
+  num_vertex_ = adj_list_.size();
 }
 
 Graph::Graph(int vertices) {
@@ -23,10 +22,6 @@ void Graph::addEdge(int source, int destination) {
   adj_list_[source].push_back(Edge(destination, 1));
   adj_list_[destination].push_back(Edge(source, 1));
   num_edge_++;
-}
-
-Graph::~Graph() {
-  // nothing to deallocate... do nothing
 }
 
 int Graph::GetNumEdges() {
@@ -80,6 +75,7 @@ int Graph::NumberofConnectedComponents() {
     if(visited[v.first] == false) {
       DFS(v.first, visited);
       count += 1;
+      std::cout << v.first << std::endl;
     }
   }
   return count;
@@ -87,7 +83,7 @@ int Graph::NumberofConnectedComponents() {
 }
 
 void Graph::DFS(int v, unordered_map<int, bool>& visited) {
-  //mark currennt node as visited
+  //mark current node as visited
   visited[v] = true;
 
   list<Edge>::iterator i;
@@ -162,16 +158,16 @@ void Graph::ReadGraphData(const std::string& filename) {
   if (!ifs.is_open()) {
     throw std::runtime_error("Cannot open input file");
   }
+
+  unordered_set<int> vertices;
   constexpr unsigned weight = 1;
   std::set<int> vertex_set;
   int src, dest;
   while (ifs >> src >> dest) {
     num_edge_++;
-    vertex_set.insert(src);
-    vertex_set.insert(dest);
+
     adj_list_[src].push_back(Edge(dest, weight));
   }
-  num_vertex_ = vertex_set.size();
   ifs.close();
 }
 

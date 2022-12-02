@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <list>
 #include <vector>
@@ -11,6 +12,7 @@
 
 using std::list;
 using std::unordered_map;
+using std::unordered_set;
 using std::vector;
 
 class Graph {
@@ -25,7 +27,6 @@ private:
 public:
     Graph(const std::string &filename);
     Graph(int vertices);
-    ~Graph();
 
     /**
      * Adds an edge between two vertices
