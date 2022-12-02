@@ -3,7 +3,8 @@
 #include <cassert>
 #include <iostream>
 #include <algorithm>
-
+#include <limits>
+#include <set>
 using std::list;
 using std::unordered_map;
 using std::vector;
@@ -12,7 +13,6 @@ Graph::Graph(const std::string& filename): num_edge_(0) {
   ReadGraphData(filename);
   std::cout << num_edge_ << std::endl;
   AddEdgeWeights();
-  num_vertex_ = adj_list_.size();
 }
 
 Graph::Graph(int vertices) {
@@ -22,6 +22,7 @@ Graph::Graph(int vertices) {
 void Graph::addEdge(int source, int destination) {
   adj_list_[source].push_back(Edge(destination, 1));
   adj_list_[destination].push_back(Edge(source, 1));
+  num_edge_++;
 }
 
 Graph::~Graph() {
@@ -79,7 +80,6 @@ int Graph::NumberofConnectedComponents() {
     if(visited[v.first] == false) {
       DFS(v.first, visited);
       count += 1;
-      std::cout << v.first << std::endl;
     }
   }
   return count;
@@ -97,7 +97,6 @@ void Graph::DFS(int v, unordered_map<int, bool>& visited) {
       DFS(i->dest, visited);
     }
   }
-
 }
 
 vector<std::pair<int,int>> Graph::ShortesPathFromMostPopular() {
@@ -107,17 +106,20 @@ vector<std::pair<int,int>> Graph::ShortesPathFromMostPopular() {
   DFS(start, connected_comp);
   vector<int> connected_vertex;
   for (std::pair<int,bool> vertex_pair : connected_comp ){
-    connected_vertex.push_back(vertex_pair.first);
-  }
-  assert(connected_comp.begin()->first == start);
-  int numVertex = connected_comp.size();
-  // build distance matrix between any two 
-  int disMat[numVertex][numVertex];
-  for (int row = 0; row < numVertex; row++) {
-    for (int col = 0; col < numVertex; col++) {
-      // the maximum number of distance between the 2 nodes is the number of vertex + 1
-      disMat[row][col] = numVertex+1; 
+    if (vertex_pair.second) {
+      connected_vertex.push_back(vertex_pair.first);
     }
+  }
+  size_t numVertex = connected_comp.size();
+  // build distance matrix between any two 
+  std::vector<std::vector<size_t>> disMat;
+  for (size_t row = 0; row < numVertex; row++) {
+    std::vector<size_t> line;
+    for(size_t col = 0; col < numVertex; col++) {
+      // the maximum number of distance between the 2 nodes is < the number of vertex +1
+      line.push_back(numVertex+1);
+    }
+    disMat.push_back(line);
   }
   disMat[0][0] = 0;
   for (std::pair<int,bool> vertex_pair: connected_comp) {
@@ -161,12 +163,15 @@ void Graph::ReadGraphData(const std::string& filename) {
     throw std::runtime_error("Cannot open input file");
   }
   constexpr unsigned weight = 1;
+  std::set<int> vertex_set;
   int src, dest;
   while (ifs >> src >> dest) {
     num_edge_++;
-
+    vertex_set.insert(src);
+    vertex_set.insert(dest);
     adj_list_[src].push_back(Edge(dest, weight));
   }
+  num_vertex_ = vertex_set.size();
   ifs.close();
 }
 

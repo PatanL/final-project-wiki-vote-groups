@@ -61,7 +61,7 @@ public:
     * @param v - the vertex to visit.
    */
     void DFS(int v, unordered_map<int, bool>& visited);
-
+    
     /**
     * Find Shortest Path between most voted candidates vs every
     * other candidates in the same connected component

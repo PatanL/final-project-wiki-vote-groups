@@ -1,5 +1,4 @@
 #include "../includes/graph.h"
-
 int main() {
     Graph g("data/wiki-Vote.txt");
     std::vector<int> nodes_depths = g.VotesDepthAwayFromMostPopular();
@@ -12,6 +11,7 @@ int main() {
     g1.addEdge(2, 3);
     g1.addEdge(3, 4);
     int num_connected_components = g1.NumberofConnectedComponents();
+    auto x = g1.ShortesPathFromMostPopular();
     std::cout << "Number of Connected Componenets: " << num_connected_components << std::endl;
     return 0;
 }
