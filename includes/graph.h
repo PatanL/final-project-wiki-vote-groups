@@ -9,7 +9,7 @@
 #include <queue>
 #include <fstream>
 #include <iostream>
-
+#include <stack>
 using std::list;
 using std::unordered_map;
 using std::unordered_set;
@@ -62,7 +62,8 @@ public:
     * @param v - the vertex to visit.
    */
     void DFS(int v, unordered_map<int, bool>& visited);
-    
+    std::stack<int> DFS(int v);
+
     /**
     * Find Shortest Path between most voted candidates vs every
     * other candidates in the same connected component
@@ -78,6 +79,7 @@ public:
 private:
     // we use a map because the indices are not consecutive (i.e., we have nodes labelled as 1, 5, 7, 20,...)
     unordered_map<int, list<Edge>> adj_list_;
+    unordered_map<int,list<Edge>> t_adj_list;
     size_t num_edge_;
     int num_vertex_;
 
