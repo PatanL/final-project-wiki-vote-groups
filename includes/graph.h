@@ -74,6 +74,7 @@ public:
     * The distance between node to an unreachable node is inf
     */ 
     unordered_map<int, double> ShortestPathFromMostPopular();
+    vector<vector<int>> Kosaraju();
     
 private:
     // we use a map because the indices are not consecutive (i.e., we have nodes labelled as 1, 5, 7, 20,...)
@@ -103,9 +104,10 @@ private:
     * @param v - the vertex to visit.
     * @returns stack containing nodes in the order they are visited
     */
-    stack<int> DFS(int start, const unordered_map<int, list<Edge>>& adj_list);
-
-    unordered_map<int, list<Edge>> Transpose(); 
+    stack<int> DFS(int start, const unordered_map<int, list<Edge>>& adj_list );
+    stack<int> DFS(int start, const unordered_map<int, list<Edge>>& adj_list, unordered_map<int,bool>& visited);
+    void KosaDFS(int start,  unordered_map<int, list<Edge>> adj_list, unordered_map<int,bool>& visited ,vector<int>& s);
+    void Transpose(unordered_map<int,list<Edge>>& trans_adj_list); 
 };
 
 template <typename T>
