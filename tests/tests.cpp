@@ -1,93 +1,116 @@
 #include "catch.hpp"
 
 #include "../includes/graph.h"
+#include "tests.hpp"
 
 #include <string>
 #include <vector>
 #include <map>
 #include <queue>
- 
-
-// TEST_CASE("Graph Built Correctly Small", "[build-graph]") {
-//     Graph g("data/test_small.txt");
-//     REQUIRE(g.GetNumEdges() == 6);
-//     REQUIRE(g.GetNumVertices() == 4);
-// }
 
 
-// TEST_CASE("Graph Built Correctly Large", "[build-graph]") {
-//     Graph g("data/test_large.txt");
-//     REQUIRE(g.GetNumEdges() == 25);
-//     REQUIRE(g.GetNumVertices() == 19);
-// }
-
-// TEST_CASE("Graph Built Correctly Main", "[build-graph]") {
-//     Graph g("data/wiki-Vote.txt");
-//     REQUIRE(g.GetNumEdges() == 103689);
-//     REQUIRE(g.GetNumVertices() == 7115);
-// }
-
-
-// TEST_CASE("DFS Small", "[build-graph]") {
-//     Graph g("data/kosa.txt");
-
-
-
-//     /**
-//     0   ->  1  
-//     |       |
-//     3   <-   2
-
-        
-//     */
-//     // while (!s.empty()) {
-//     //     std::cout << s.top() << std::endl;
-//     //     s.pop();
-//     // }
-//     vector<vector<int>> v = g.Kosaraju();
-//     for (auto x: v[0]) {
-//         std::cout<< x << " ";
-//     }
-//     std::cout << '\n';
-//     // for (auto x: v) {
-//     //     for (auto y: x) {
-//     //         std::cout << y;
-//     //     }
-//     //     std::cout << "\n";
-//     // }
-// }
-// TEST_CASE("DFS Small 2", "[build-graph]") {
-//     Graph g("data/kosa1.txt" );
-//     // while (!s.empty()) {
-//     //     std::cout << s.top() << std::endl;
-//     //     s.pop();
-//     // }
-//     vector<vector<int>> v = g.Kosaraju();
-
-// }
-TEST_CASE("DFS Small 3", "[build-graph]") {
-    Graph g("data/wiki-Vote.txt" );
-    // while (!s.empty()) {
-    //     std::cout << s.top() << std::endl;
-    //     s.pop();
-    // }
-    vector<vector<int>> v = g.Kosaraju();
-    // for (auto x: v) {
-    //     for (auto y: x) {
-    //         std::cout << y << " ";
-    //     }
-    //     std::cout << "\n";
-    // }
-    vector<int> v1 = v[0];
-    for (auto x: v1) {
-        std::cout << x << " ";
+////////////////////////////////////////
+/////   Testing Helper Functions    ////
+////////////////////////////////////////
+bool compare_2D_vector(vector<vector<int>> lhs, vector<vector<int>> rhs) {
+    if (lhs.size() != rhs.size()) {
+        return false;
     }
-    std::cout<< "\n";
-    // for (auto x: v[0]) {
-    //     std::cout<< x << " ";
-    // }
-    // std::cout << '\n';
+    for (size_t i = 0; i < lhs.size(); i++) {
+        vector<int> l = lhs[i];
+        vector<int> r = rhs[i];
+        std::sort(l.begin(),l.end());
+        std::sort(r.begin(),r.end());
+        if (l != r) {
+            return false;
+        }
+    }
+    return true;
+}
+bool compare_map(unordered_map<int,double> lhs, unordered_map<int,double> rhs) {
+    if (lhs.size() != rhs.size()) {
+        return false;
+    }
+    for (std::pair<int,double> p: lhs) {
+        if (p.second != rhs[p.first]) {
+            return false;
+        }
+    }
+    return true;
+}
 
+TEST_CASE("Graph Built Correctly Small", "[build-graph]") {
+    Graph g("data/test_small.txt");
+    REQUIRE(g.GetNumEdges() == 7);
+    REQUIRE(g.GetNumVertices() == 6);
+}
+
+
+TEST_CASE("Graph Built Correctly Large", "[build-graph]") {
+    Graph g("data/test_large.txt");
+    REQUIRE(g.GetNumEdges() == 26);
+    REQUIRE(g.GetNumVertices() == 19);
+}
+
+TEST_CASE("Graph Built Correctly Main", "[build-graph]") {
+    Graph g("data/wiki-Vote.txt");
+    // This number was included in the dataset
+    REQUIRE(g.GetNumEdges() == 103689);
+    REQUIRE(g.GetNumVertices() == 7115);
+}
+
+TEST_CASE("Kosaraju Test 1", "[kosaraju]") {
+    Graph g("data/kosa1.txt");
+    // We will call Kosaraju on node 0
+    vector<vector<int>> v = g.Kosaraju(0);
+    vector<vector<int>> ans;
+    std::vector<int> comp1{0,1,2,3};
+    std::vector<int> comp2{4,5,6};
+    std::vector<int> comp3{7};
+    ans.push_back(comp1);
+    ans.push_back(comp2);
+    ans.push_back(comp3);
+    REQUIRE(compare_2D_vector(v,ans));
+}
+
+TEST_CASE("Kosaraju Test 2", "[kosaraju]") {
+    Graph g("data/kosa2.txt" );
+    vector<vector<int>> v = g.Kosaraju();
+    vector<vector<int>> ans;
+    std::vector<int> comp1{0,2,3,4,5};
+    std::vector<int> comp2{6,7,8};
+    ans.push_back(comp1);
+    ans.push_back(comp2);
+    REQUIRE(compare_2D_vector(v,ans));
+}
+
+TEST_CASE("ShortestPathFromMostPopular Small", "[SSSP]") {
+    Graph g("data/test_small.txt");
+    // The most popular node is node 3
+    std::unordered_map<int,double> distance_map = g.ShortestPathFromMostPopular();
+    std::unordered_map<int,double> ans;
+    ans.insert({3,0});
+    ans.insert({1,1});
+    ans.insert({4, 4.0 / 3});
+    ans.insert({2,4.0 / 3});
+    REQUIRE(compare_map(ans,distance_map));
+}
+
+TEST_CASE("ShortestPathFromMostPopular Large", "[SSSP]") {
+    Graph g("data/test_large.txt");
+    // Most popular node is node 5
+    std::unordered_map<int,double> distance_map = g.ShortestPathFromMostPopular();
+    std::unordered_map<int,double> ans;
+    ans.insert({5,0});
+    ans.insert({2,0.5});
+    ans.insert({19,0.5});
+    ans.insert({8,1});
+    ans.insert({9,1});
+    ans.insert({10,1.25});
+    ans.insert({14,1.25});
+    ans.insert({18,1.25});
+    ans.insert({20,1.25});
+    REQUIRE(compare_map(ans,distance_map));
 }
 // TEST_CASE("Graph::VotesDepthAwayFromMostPopular Small", "[weight=5]") {
 //     Graph g("data/test_small.txt");

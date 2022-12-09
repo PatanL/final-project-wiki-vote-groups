@@ -4,7 +4,7 @@ CXX_FLAGS=-std=c++20 -Wall -Wextra -Werror -pedantic $(INCLUDES)
 CXX_FLAGS_OPTIMIZED=-std=c++20 -O3 -Wall -Wextra -Werror -pedantic $(INCLUDES)
 SRC_INPUTS=src/graph.cpp
 TEST_INPUTS=tests/tests.cpp src/graph.cpp
-INCLUDES_INPUTS=includes/graph.h
+INCLUDES_INPUTS=includes/graph.h tests/tests.hpp
 INPUTS=$(SRC_INPUTS) $(INCLUDES_INPUTS)
 
 exec: bin/exec

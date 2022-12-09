@@ -69,6 +69,7 @@ vector<vector<int>> Graph::Kosaraju() {
 vector<vector<int>> Graph::Kosaraju(int start) {
   vector<vector<int>> output;
   std::unordered_map<int,bool> visited;
+  
   //Call our DFS that return a queue, which will initialize visited with all nodes in connected components & true
   queue<int> connected_comp= DFS(start,adj_list_,visited); 
 
@@ -124,14 +125,6 @@ unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
       disMat.at(v1_idx).at(v2_idx) = adj_edge.weight;
     }
   }
-  // for(size_t a = 0; a < disMat.size(); a++)
-  // {
-  //   for(size_t b = 0; b < disMat[0].size(); b++)
-  //   {
-  //     std::cout << disMat[a][b] << " ";
-  //   }
-  //   std::cout << '\n';
-  // }
 
   // compute distances
   for (int source : connected_vertex) {
