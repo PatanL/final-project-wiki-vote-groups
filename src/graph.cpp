@@ -60,20 +60,42 @@ vector<int> Graph::VotesDepthAwayFromMostPopular() {
   return node_at_depths;
 }
 
-int Graph::NumberofConnectedComponents() {
-  // int count = 0;
-  // unordered_map<int, bool> visited;
-  // assert(visited[0] == false);
-  // for(std::pair<int, list<Edge>> v : adj_list_) {
-  //   if(visited[v.first] == false) {
-  //     DFS(v.first, visited);
-  //     count += 1;
-  //     // std::cout << v.first << std::endl;
-  //   }
-  // }
-  return 0;
-
+vector<vector<int>> Graph::Kosaraju() {
+  // We will call the helper function with the starting node to be our most voted node
+  int start = FindMostVotedNode();
+  return Kosaraju(start);
 }
+
+vector<vector<int>> Graph::Kosaraju(int start) {
+  vector<vector<int>> output;
+  std::unordered_map<int,bool> visited;
+  //Call our DFS that return a queue, which will initialize visited with all nodes in connected components & true
+  queue<int> connected_comp= DFS(start,adj_list_,visited); 
+
+  // After DFS, all value in visited become true, thus we flip it to make more sense later on
+  for (std::pair<int,bool> p : visited) {
+    visited[p.first] = false;
+  } 
+
+  // Obtain the transpose adj_list
+  unordered_map<int,list<Edge>> transpose;
+  Transpose(transpose);
+
+
+  // Kosaraju
+  while (!connected_comp.empty() ) {
+    int cur = connected_comp.front();
+    connected_comp.pop();
+    if (visited[cur]) {
+      continue;
+    }
+    // Call Kosaraju DFS to get the vector of nodes in the connected components that include the current node
+    std::vector<int> s = KosaDFS(cur, transpose,visited);
+    output.push_back(s);
+  }
+  return output;
+}
+
 
 unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
   int start = FindMostVotedNode();
@@ -181,6 +203,7 @@ int Graph::FindMostVotedNode() const {
 bool Graph::NoDirectedAdjacentNodes(int node) const {
   return adj_list_.count(node) == 0;
 }
+
 stack<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list) {
   unordered_map<int, bool> visited;
   stack<int> visited_nodes;
@@ -205,45 +228,38 @@ stack<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list)
   }
   return visited_nodes;
 }
-void Graph::KosaDFS(int start,  unordered_map<int, list<Edge>> adj_list, unordered_map<int,bool>& visited,vector<int>& s) {
-  visited[start] = true;
-  s.push_back(start);
-  for (Edge e : adj_list[start]) {
-    if (!visited[e.dest]) {
-      KosaDFS(e.dest, adj_list,visited,s);
+vector<int> Graph::KosaDFS(int start,  unordered_map<int, list<Edge>> adj_list, unordered_map<int,bool>& visited) {
+  // Normal Traversal 
+  unordered_map<int, bool> v;
+  stack<int> visited_nodes;
+  vector<int> output;
+  visited_nodes.push(start);
+  while (!visited_nodes.empty()) {
+    int curr_node = visited_nodes.top();
+    visited_nodes.pop();
+    // Only difference is we always check for already visited node before working on any node
+    if (visited[curr_node]) {
+      continue;
+    }
+    output.push_back(curr_node);
+    visited[curr_node] = true;
+    if (adj_list.count(curr_node) == 0) {
+      continue;
+    }
+
+    for (const Edge& e : adj_list.at(curr_node)) {
+      // Check if the node is ever visited before
+      if (!visited[e.dest]) {
+        visited_nodes.push(e.dest);
+      }
     }
   }
-  
-  // unordered_map<int, bool> v;
-  // stack<int> visited_nodes;
-  // stack<int> s;
-  // v[start] = true;
-  // s.push(start);
-  // while (!s.empty()) {
-  //   int curr_node = s.top();
-  //   s.pop();
-  //   if (visited[curr_node]) {
-  //     continue;
-  //   }
-  //   visited_nodes.push(curr_node);
-  //   visited[curr_node] = true;
-  //   if (adj_list.count(curr_node) == 0) {
-  //     continue;
-  //   }
-
-  //   for (const Edge& e : adj_list.at(curr_node)) {
-  //     if (!v[e.dest]) {
-  //       v.at(e.dest) = true;
-  //       s.push(e.dest);
-  //     }
-  //   }
-  // }
-  // return visited_nodes;
+  return output;
 }
 
 
-stack<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list, unordered_map<int,bool>& visited) {
-  stack<int> visited_nodes;
+queue<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list, unordered_map<int,bool>& visited) {
+  queue<int> visited_nodes;
   stack<int> s;
   visited[start] = true;
   s.push(start);
@@ -265,31 +281,6 @@ stack<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list,
   }
   return visited_nodes;
 }
-
-
-// queue<int> Graph::DFS(int start, const unordered_map<int, list<Edge>>& adj_list, unordered_map<int,bool>& visited) {
-//   queue<int> visited_nodes;
-//   stack<int> s;
-//   visited[start] = true;
-//   s.push(start);
-//   while (!s.empty()) {
-//     int curr_node = s.top();
-//     s.pop();
-//     visited_nodes.push(curr_node);
-
-//     if (adj_list.count(curr_node) == 0) {
-//       continue;
-//     }
-
-//     for (const Edge& e : adj_list.at(curr_node)) {
-//       if (!visited[e.dest]) {
-//         visited.at(e.dest) = true;
-//         s.push(e.dest);
-//       }
-//     }
-//   }
-//   return visited_nodes;
-// }
   
 
 void Graph::Transpose(unordered_map<int,list<Edge>>& trans_adj_list) {
@@ -302,65 +293,3 @@ void Graph::Transpose(unordered_map<int,list<Edge>>& trans_adj_list) {
     }
   }
 }
-
-vector<vector<int>> Graph::Kosaraju() {
-  vector<vector<int>> output;
-  // Find the most voted node
-  int start = 0;
-  // int start = FindMostVotedNode();
-  // int no_connected_comp = 0;
-  
-  // Initialize visited map for all node in the connected component with all node link to a false 
-  std::unordered_map<int,bool> visited;
-  // Initialize the visited vector 
-  stack<int> c = DFS(start, adj_list_,visited);
-  stack<int> connected_comp;
-  while (!c.empty())  {
-    connected_comp.push(c.top());
-    // std::cout << c.front() << std::endl;
-    c.pop();
-  }
-  // while (!connected_comp.empty())  {
-  //   std::cout << connected_comp.top() << std::endl;
-  //   connected_comp.pop();
-  // }
-  // After DFS, all value in visited become true, thus we flip it to make more sense later on
-  for (std::pair<int,bool> p : visited) {
-    visited[p.first] = false;
-  } 
-  // Obtain the transpose adj_list
-  unordered_map<int,list<Edge>> transpose;
-  Transpose(transpose);
-
-
-  // Kosaraju
-
-  while (!connected_comp.empty() ) {
-    int cur = connected_comp.top();
-    connected_comp.pop();
-    if (visited[cur]) {
-      continue;
-    }
-    // visited[cur] = true;
-    std::vector<int> s;
-    KosaDFS(cur, transpose,visited,s);
-    output.push_back(s);
-    // for (auto x:s) {
-    //   std::cout << x << " ";
-    // }
-    // std::cout << '\n';
-  }
-
-
-
-
-
-
-  return output;
-
-}
-// unordered_map<int, list<Edge>> Graph::Transpose() {
-//   unordered_map<int, list<Edge>> trans_adj_list;
-  
-//   // TODO
-// }

@@ -28,25 +28,36 @@
 // }
 
 
-TEST_CASE("DFS Small", "[build-graph]") {
-    Graph g("data/kosa.txt");
-    // while (!s.empty()) {
-    //     std::cout << s.top() << std::endl;
-    //     s.pop();
-    // }
-    vector<vector<int>> v = g.Kosaraju();
-}
-TEST_CASE("DFS Small 2", "[build-graph]") {
-    Graph g("data/kosa1.txt" );
-    // while (!s.empty()) {
-    //     std::cout << s.top() << std::endl;
-    //     s.pop();
-    // }
-    vector<vector<int>> v = g.Kosaraju();
+// TEST_CASE("DFS Small", "[build-graph]") {
+//     Graph g("data/kosa.txt");
 
-}
-// TEST_CASE("DFS Small 3", "[build-graph]") {
-//     Graph g("data/wiki-Vote.txt" );
+
+
+//     /**
+//     0   ->  1  
+//     |       |
+//     3   <-   2
+
+        
+//     */
+//     // while (!s.empty()) {
+//     //     std::cout << s.top() << std::endl;
+//     //     s.pop();
+//     // }
+//     vector<vector<int>> v = g.Kosaraju();
+//     for (auto x: v[0]) {
+//         std::cout<< x << " ";
+//     }
+//     std::cout << '\n';
+//     // for (auto x: v) {
+//     //     for (auto y: x) {
+//     //         std::cout << y;
+//     //     }
+//     //     std::cout << "\n";
+//     // }
+// }
+// TEST_CASE("DFS Small 2", "[build-graph]") {
+//     Graph g("data/kosa1.txt" );
 //     // while (!s.empty()) {
 //     //     std::cout << s.top() << std::endl;
 //     //     s.pop();
@@ -54,6 +65,30 @@ TEST_CASE("DFS Small 2", "[build-graph]") {
 //     vector<vector<int>> v = g.Kosaraju();
 
 // }
+TEST_CASE("DFS Small 3", "[build-graph]") {
+    Graph g("data/wiki-Vote.txt" );
+    // while (!s.empty()) {
+    //     std::cout << s.top() << std::endl;
+    //     s.pop();
+    // }
+    vector<vector<int>> v = g.Kosaraju();
+    // for (auto x: v) {
+    //     for (auto y: x) {
+    //         std::cout << y << " ";
+    //     }
+    //     std::cout << "\n";
+    // }
+    vector<int> v1 = v[0];
+    for (auto x: v1) {
+        std::cout << x << " ";
+    }
+    std::cout<< "\n";
+    // for (auto x: v[0]) {
+    //     std::cout<< x << " ";
+    // }
+    // std::cout << '\n';
+
+}
 // TEST_CASE("Graph::VotesDepthAwayFromMostPopular Small", "[weight=5]") {
 //     Graph g("data/test_small.txt");
 //     std::vector<int> nodes_depth = g.VotesDepthAwayFromMostPopular();
