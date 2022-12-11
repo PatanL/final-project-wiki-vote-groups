@@ -27,8 +27,10 @@ We verified the results of this algorithm by writing various smaller test cases 
 The algorithm runs in $\mathcal{O}(n + m)$ 
 
 ## Leading Question
-By implementing the aforementioned algorithms, we were able to accomplish our leading goal of “creat[ing] a tool that helps travelers navigate through the dataset.” 
+By implementing the aforementioned algorithms, we were able to accomplish our leading goal of “Trying to understand more of the voting scheme inside of Wikipedia, as well as finding whether or not are there a 'political party' inside of it” 
 
-Dijkstra’s, for instance, provides travelers with a GPS that outputs the shortest path from one node (potentially their current location) to another. Travelers seeking a thorough sample of attractions in California without visiting overlapping attractions can use our Welsh-Powell algorithm to retrieve the number of unique samples as well as the attractions corresponding to a particular sample. At the same time, travelers can find the coordinates of the closest attraction to their current location (or any location in California) using our k-nearest neighbors algorithm. Breadth-first search, meanwhile, can be used to obtain a route travelers can use to visit all of the attractions in a particular region of California. The combination of these features creates a robust touring guide to our dataset that could translate to the real world (if it were 2005). 
+The BFS gives us an understanding of who is the most voted person (person id 4037), which is needed for all other remaining functionas well as how in average ,"far away" in terms of votes are other person from him/her ( 2.90328 votes depth away in average)
 
-One of the discoveries we made while implementing the project was that California’s road networks aren’t as densely connected as we believed them to be. Our Welsh-Powell algorithm indicates that three colors is enough to color the entire graph, and our breadth-first search traversal further supports this discovery by only being able to traverse through small connected components We also observed that the attractions in California tend to cluster together in dense groups instead of being evenly dispersed throughout the state.
+Our Floyd-Warshall algorithm has shown what is the distance from that most voted nodes/person to all other reachable person when given weight to each edge, and also finding out who is the furthest from most popular (out of all those are reachable), which is person 5158
+
+Finally, our Kosaraju's Strongly Connected Component has found the largest "political party" inside of the voting landscape, which contains up to 5158 person, where any person can be reached by all other person inside the component. 
