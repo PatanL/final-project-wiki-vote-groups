@@ -122,16 +122,10 @@ TEST_CASE("ShortestPathFromMostPopular Large", "[SSSP]") {
     ans.insert({20,1.25});
     REQUIRE(compare_map(ans,distance_map));
 }
-// TEST_CASE("Graph::VotesDepthAwayFromMostPopular Small", "[weight=5]") {
-//     Graph g("data/test_small.txt");
-//     std::vector<int> nodes_depth = g.VotesDepthAwayFromMostPopular();
-//     std::vector<int> ans = {1, 1, 2};
-//     REQUIRE(nodes_depth == ans);
-// }
 
-// TEST_CASE("Graph::ShortestPathFromMostPopular small", "[weight=5]") {
-//     Graph g("data/test_small.txt");
-//     unordered_map<int, double> nodes_depth = g.ShortestPathFromMostPopular();
-//     unordered_map<int, double> ans = {{3, 0}, {1, 1}, {2, 4.0/3}, {4, 4.0/3}};
-//     REQUIRE(nodes_depth == ans);
-// }
+TEST_CASE("VotesDepthAwayFromMostPopular Small", "[weight=5]") {
+    Graph g("data/test_small.txt");
+    std::vector<int> nodes_depth = g.VotesDepthAwayFromMostPopular();
+    std::vector<int> ans = {1, 1, 2};
+    REQUIRE(nodes_depth == ans);
+}
