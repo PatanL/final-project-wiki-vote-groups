@@ -2,9 +2,16 @@
 
 
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc == 1) {
+        std::cout << "Please input a data file\n";
+        return 1;
+    }
+    if (argc > 2) {
+        std::cout << "More than one input given. Only the first one will be used.\n";
+    }
     // We first build our graph out of the wiki-Vote dataset
-    Graph g("data/wiki-Vote.txt");
+    Graph g(argv[1]);
     // We first find the most popular vertices, or in this particular cases, the most voted admin.
     std::cout << "The most popular admin ID is : " << g.FindMostVotedNode() << std::endl;
     /**
