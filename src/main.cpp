@@ -30,7 +30,7 @@ int main() {
      * We'll use the Kosaraju's strongly connected component algorithm starting from the most popular node 
      * to handle this.
     */
-    std::cout << "Proposal 1" << std::endl;
+    std::cout << "Additional Proposal" << std::endl;
     std::vector<std::vector<int>> strongly_connected_comps = g.Kosaraju();
     size_t max_num_node = 0;
     size_t max_idx = 0;
@@ -46,5 +46,21 @@ int main() {
     } else {
         std::cout << "The largest 'political party' contains " << max_num_node << " admins. However, the most popular node is not a part of it" <<std::endl;
     }
+    /**
+     * We'll discuss our additional  prompt: finding the furthese reachable person from the most popular, given the weight 
+     * of each vote is 1 / (number of votes of the voter)
+     * We'll use the Floyd-Warshall's SSSP to handle this
+     * Note: This function is going to take a lot longer to run compared to the rest 
+    */
+    std::unordered_map<int,double> sssp = g.ShortestPathFromMostPopular();
+    int furthest_reachable_person = 0;
+    float furthest_distance =0;
+    for (std::pair<int,double> person: sssp) {
+        if (person.first > furthest_distance) {
+            furthest_reachable_person = person.first;
+            furthest_distance = person.second;
+        }
+    }
+    std::cout << "The furthese reachable person id is " <<furthest_reachable_person << std::endl;
     return 0;
 }

@@ -109,6 +109,7 @@ TEST_CASE("ShortestPathFromMostPopular Small", "[SSSP]") {
 TEST_CASE("ShortestPathFromMostPopular Large", "[SSSP]") {
     Graph g("data/test_large.txt");
     // Most popular node is node 5
+
     std::unordered_map<int,double> distance_map = g.ShortestPathFromMostPopular();
     std::unordered_map<int,double> ans;
     ans.insert({5,0});
