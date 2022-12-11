@@ -84,6 +84,16 @@ TEST_CASE("Kosaraju Test 2", "[kosaraju]") {
     REQUIRE(compare_2D_vector(v,ans));
 }
 
+TEST_CASE("Kosaraju Test 3", "[kosaraju]") {
+    Graph g("data/kosa3.txt" );
+    vector<vector<int>> result = g.Kosaraju();
+    // Expected output: 3 strongly connected components [[0, 1, 2], [3], [4]]
+    vector<vector<int>> expected = {{0, 1, 2},
+                                    {3},
+                                    {4}};
+    REQUIRE(compare_2D_vector(result,expected));
+}
+
 TEST_CASE("ShortestPathFromMostPopular Small", "[SSSP]") {
     Graph g("data/test_small.txt");
     // The most popular node is node 3
