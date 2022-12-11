@@ -16,7 +16,8 @@
 # Installation
 Clone the repository with this command
 
-git clone https://github-dev.cs.illinois.edu/cs225-fa20/aehasan2-zeh3-noahrr2-mathewf2.git
+`git clone https://github-dev.cs.illinois.edu/cs225-fa20/aehasan2-zeh3-noahrr2-mathewf2.git`
+Then `cd` into the new directory and follow the [How to Build](https://github.com/PatanL/final-project-wiki-vote-groups/edit/main/README.md#how-to-Build)
 
 # Data
 [Data](https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/data)
@@ -26,7 +27,7 @@ git clone https://github-dev.cs.illinois.edu/cs225-fa20/aehasan2-zeh3-noahrr2-ma
 
 # Features/Code
 
-# How to Build (with execution examples)
+# How to Build
 # How to Test
 * Description of Tests:
 
