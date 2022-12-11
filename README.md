@@ -24,7 +24,7 @@ We use the data from the Stanford SNAP dataset (http://snap.stanford.edu/data/wi
 Make sure you are running the program in Docker. If not, follow [This Guide](https://courses.engr.illinois.edu/cs225/sp2022/resources/own-machine/) to get started.
 
 ### Executable
-In order to get the program running, run `make` and then `bin/exec` in the root directory.
+In order to get the program running, run `make` and then `bin/exec [INSERT PATH TO DATA FILE]` in the root directory. To run the program with the dataset we used, run `bin/exec data/wiki-Vote.txt`. Note that the program will throw an error is no input file is given or if an incorrect data file is given.
 
 We call all our functions to demonstrate functionality in the main.cpp file. This includes:
 1. Build graph:
