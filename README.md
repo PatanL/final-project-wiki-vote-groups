@@ -1,4 +1,4 @@
-# anhnp2, shayana3, pzl2
+# shayana3, pzl2
 # Final Project
 # [Video Presentation of Project]() link to be added
 # Deliverables
@@ -16,7 +16,7 @@
 * #### Written Report
   * [Report]() link to be added
 # Installation
-Clone the repository with this command
+Clone the repository with this command. 
 
 `git clone https://github-dev.cs.illinois.edu/cs225-fa20/aehasan2-zeh3-noahrr2-mathewf2.git`
 Then `cd` into the new directory and follow the [How to Build](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/README.md#how-to-Build)
