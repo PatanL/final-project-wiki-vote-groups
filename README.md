@@ -1,12 +1,14 @@
 # anhnp2, shayana3, pzl2
 # Final Project
-# Video Presentation of Project
-# Documentation
+# [Video Presentation of Project]() link to be added
+# Deliverables
+* #### Code 
+  * All the code is found in [`/src`](https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/src)
 * #### Proposal
-  * [Project Proposal Documentation](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/documents/Proposal.md)
+  * [Project Proposal](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/documents/Proposal.md)
 
 * #### Development
-  * [Development Log Documentation](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/documents/log.md). 
+  * [Development Log](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/documents/log.md). 
   
 * #### Contracts
   * [Team Contract](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/documents/Contract.md)
@@ -26,7 +28,7 @@ Then `cd` into the new directory and follow the [How to Build](https://github.co
 [Tests](https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/tests)
 
 # Features/Code
-
+[Code]()
 # How to Build
 # How to Test
 * Description of Tests:
