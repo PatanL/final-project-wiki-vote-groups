@@ -1,9 +1,14 @@
-# shayana3, pzl2
+# anhnp2, shayana3, pzl2
 # Final Project
 # [Video Presentation of Project]() link to be added
+
+# Data
+
+We use the data from the Stanford SNAP dataset (http://snap.stanford.edu/data/wiki-Vote.html) , a dataset on the network of all the Wikipedia voting data from the inception of Wikipedia till January 2008.
+
 # Deliverables
 * #### Code 
-  * All the code is found in [`/src`](https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/src)
+  * All the code is found in the root directory(https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/)
 * #### Proposal
   * [Project Proposal](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/documents/Proposal.md)
 
@@ -16,20 +21,27 @@
 * #### Written Report
   * [Report]() link to be added
 # Installation
-Clone the repository with this command. 
+Make sure you are running the program in Docker. If not, follow [This Guide](https://courses.engr.illinois.edu/cs225/sp2022/resources/own-machine/) to get started.
 
-`git clone https://github-dev.cs.illinois.edu/cs225-fa20/aehasan2-zeh3-noahrr2-mathewf2.git`
-Then `cd` into the new directory and follow the [How to Build](https://github.com/PatanL/final-project-wiki-vote-groups/blob/main/README.md#how-to-Build)
+### Executable
+In order to get the program running, run `make` and then `bin/exec` in the root directory.
 
-# Data
-[Data](https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/data)
+We call all our functions to demonstrate functionality in the main.cpp file. This includes:
+1. Build graph:
+   - Input: data file
+   - Output: Nothing, but the graph is built
+2. Most Voted Node:
+   - Input: the graph
+   - Output: The most voted admin ID
+3. Votes Away From Most Popular:
+   - Input: the graph
+   - Output: A vector of the number of admin ID corresponding to increasing depth from most popular admin (starting from 0)
+4. Strongly Connected Component:
+   - Input: the graph
+   - Output: A vector of all strongly connected component in form of a vector of admin index
 
-# Tests
-[Tests](https://github.com/PatanL/final-project-wiki-vote-groups/tree/main/tests)
+### Tests
+To run the test cases, run `make test` then `bin/test` in the root directory.
 
-# Features/Code
-[Code]()
-# How to Build
-# How to Test
-* Description of Tests:
+We constructed several small to medium sized datasets in /data directory, which are used as test cases to evaluate if the output of our algorithms are as expected. We also tested for edge cases such as when the graph is not fully connected. Our tests focus on testing the functionality of graph construction, Kosaraju's Strongly Connected Component, Floyd-Warshall SSSP, and BFS Traversal.
 
