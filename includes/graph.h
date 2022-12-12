@@ -88,6 +88,10 @@ public:
      * i.e., the node that was voted for the most times
     */
     int FindMostVotedNode() const;
+    /*
+    Save the graph's adjacency list to a text file.
+    */
+    void SaveAdjacencyList();
     
 private:
     // we use a map because the indices are not consecutive (i.e., we have nodes labelled as 1, 5, 7, 20,...)
