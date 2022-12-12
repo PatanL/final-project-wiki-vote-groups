@@ -62,7 +62,7 @@ Finish implementing the DFS(Anh) and BFS(Shayan) and finish the Floyd-Warshall a
 None at the moment.
 
 
-# Development Log (Date: XX/YY/ZZ -- XX/YY/ZZ)
+# Development Log (Date: 11/28/22 -- 12/02/22)
 
 ## Weekly Goals
 Our weekly goals were to write test cases for BFS and building the graph. Implement Floyd-Warshall's algorithm, function to find the number of connected components, and write test cases for everything. We finished everything except for writing all the test cases. 
