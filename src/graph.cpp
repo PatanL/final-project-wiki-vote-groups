@@ -128,8 +128,6 @@ unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
   // compute distances
   for (int source : connected_vertex) {
     int src_idx = indices.at(source);
-    if (src_idx % 100 == 0)
-      std::cout << src_idx << '\n';
     for (int dest : connected_vertex) {
       int dest_idx = indices.at(dest);
       for (int mid : connected_vertex) {
