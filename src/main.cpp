@@ -69,6 +69,6 @@ int main(int argc, char* argv[]) {
             furthest_distance = person.second;
         }
     }
-    std::cout << "The furthese reachable person id is " <<furthest_reachable_person << " << std::endl;
+    std::cout << "The furthese reachable person id is " <<furthest_reachable_person << " with the distance of "  << sssp[3276]<< std::endl;
     return 0;
 }
