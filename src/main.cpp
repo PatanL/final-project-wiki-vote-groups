@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
      * from most popular admin.
      * This can be rephrased as finding the average depth of all reachable node from most popular.
     */
-    std::cout << "Proposal 2 " << std::endl;
+    std::cout << "Proposal 2" << std::endl;
     std::cout << "The number of nodes at each level away from the most popular node are :" << std::endl;
     std::vector<int> nodes_depths = g.VotesDepthAwayFromMostPopular();
     float average_depth = 0;
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
      * We'll use the Kosaraju's strongly connected component algorithm starting from the most popular node 
      * to handle this.
     */
-    std::cout << "Additional Proposal" << std::endl;
+    std::cout << "Proposal 1" << std::endl;
     std::vector<std::vector<int>> strongly_connected_comps = g.Kosaraju();
     size_t max_num_node = 0;
     size_t max_idx = 0;
@@ -57,8 +57,9 @@ int main(int argc, char* argv[]) {
      * We'll discuss our additional  prompt: finding the furthese reachable person from the most popular, given the weight 
      * of each vote is 1 / (number of votes of the voter)
      * We'll use the Floyd-Warshall's SSSP to handle this
-     * Note: This function is going to take a lot longer to run compared to the rest 
+     * Note: This function will take a lot longer to run compared to the rest 
     */
+    std::cout << "Proposal 3: " <<std::endl;
     std::unordered_map<int,double> sssp = g.ShortestPathFromMostPopular();
     int furthest_reachable_person = 0;
     float furthest_distance =0;
@@ -68,6 +69,6 @@ int main(int argc, char* argv[]) {
             furthest_distance = person.second;
         }
     }
-    std::cout << "The furthese reachable person id is " <<furthest_reachable_person << std::endl;
+    std::cout << "The furthese reachable person id is " <<furthest_reachable_person << " << std::endl;
     return 0;
 }

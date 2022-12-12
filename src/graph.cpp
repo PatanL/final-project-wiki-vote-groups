@@ -105,7 +105,6 @@ unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
 
   // run DFS on the start node in order to get all node in connected component
   vector<int> connected_vertex = StackToVector(DFS(start, adj_list_));
-  std::cout << 1 <<std::endl;
   int numVertex = connected_vertex.size();
   for (int i = 0; i < numVertex; ++i) {
     indices.insert({connected_vertex[i], i});
@@ -126,7 +125,6 @@ unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
       disMat.at(v1_idx).at(v2_idx) = adj_edge.weight;
     }
   }
-  // std::cout << connected_vertex.size() <<std::endl;
   // compute distances
   for (int source : connected_vertex) {
     int src_idx = indices.at(source);
@@ -140,13 +138,11 @@ unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
       }
     }
   }
-  std::cout << 3 <<std::endl;
 
   unordered_map<int, double> dist_to_start;
   for (int dest : connected_vertex) {
     dist_to_start.insert({dest, disMat[indices.at(start)][indices.at(dest)]});
   }
-  std::cout << 4 <<std::endl;
   return dist_to_start;
 }
 
