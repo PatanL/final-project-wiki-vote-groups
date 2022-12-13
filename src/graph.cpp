@@ -144,6 +144,24 @@ unordered_map<int, double> Graph::ShortestPathFromMostPopular() {
   return dist_to_start;
 }
 
+void Graph::SaveAdjacencyList() {
+  unordered_map<int,list<Edge>> adj_list = adj_list_;
+  // Open the output file
+  std::ofstream out_file("adjacency_list.txt");
+  for (std::pair<int,list<Edge>> p : adj_list) {
+    // Loop through the elements of each row and write them to the file
+    out_file << p.first << " ";
+    for (Edge elem : p.second) {
+      out_file << elem.dest << " ";
+    }
+    // Add a newline character after each row
+    out_file << "\n";
+  }
+
+  // Close the output file
+  out_file.close();
+}
+
 ////////////////////////////////////////
 /////   Private Member Functions    ////
 ////////////////////////////////////////
@@ -283,22 +301,4 @@ void Graph::Transpose(unordered_map<int,list<Edge>>& trans_adj_list) {
       trans_adj_list[dest].push_back(Edge(start,weight));
     }
   }
-}
-
-void Graph::SaveAdjacencyList() {
-  unordered_map<int,list<Edge>> adj_list = adj_list_;
-  // Open the output file
-  std::ofstream out_file("adjacency_list.txt");
-  for (std::pair<int,list<Edge>> p : adj_list) {
-    // Loop through the elements of each row and write them to the file
-    out_file << p.first << " ";
-    for (Edge elem : p.second) {
-      out_file << elem.dest << " ";
-    }
-    // Add a newline character after each row
-    out_file << "\n";
-  }
-
-  // Close the output file
-  out_file.close();
 }
