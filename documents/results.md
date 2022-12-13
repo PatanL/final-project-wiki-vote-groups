@@ -10,6 +10,8 @@ The input to the BFS is the graph and the starting node and the output is a vect
 
 The algorithm runs in $\mathcal{O}(n + m)$ where ( $n$ is the number of edges and $m$ is the number of vertices).
 
+We verified that the BFS was correct by running test cases using a smaller dataset and ensuring it worked as intended.
+
 ### Floyd-Warshall Shortest Path
 
 Our Floyd-Warshall shortest path algorithm takes the form of the `VotesDepthAwayFromMostPopular()` function. It takes in the input as the graph, and perform the algorithm on the connected component including the most popular node. The output is an unordered map with the node ID as key and the distance away from the most popular node as value. Note that we declare the weight of a vote as 1 / (the number of votes given by that voter).
